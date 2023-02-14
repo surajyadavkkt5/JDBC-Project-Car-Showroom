@@ -1,0 +1,262 @@
+import java.sql.*;
+import java.util.*;
+
+public class CarWale{
+
+	static {
+		/*Static block*/
+		System.out.println("welcome to CarWale HomePage (: \n"
+				            +"============================");
+		}
+	/* resgistration method*/
+	public void register() {
+		Scanner sc=new Scanner(System.in);
+		System.out.println("enter id number: ");
+		int id=sc.nextInt();
+		System.out.println("Enter name: ");
+		String name=sc.next();
+		System.out.println("Enter password: ");
+		String password=sc.next();
+		System.out.println("Enter number: ");
+		String number=sc.next();
+		System.out.println("Enter email: ");
+		String email=sc.next();
+		
+		try {
+			String fqcn="com.mysql.jdbc.Driver";
+			String url = "jdbc:mysql://localhost:3306?user=root&password=Missrita@55";
+			String insert= "insert into  register.reg values(?,?,?,?,?) ";
+			 Class.forName(fqcn);
+			Connection con=DriverManager.getConnection(url);
+		    PreparedStatement pstmt= con.prepareStatement(insert);	// to write Query 	
+	          
+		     // set values for placeholder (input from user)
+		     pstmt.setInt(1, id);
+		     pstmt.setString(2, name);
+		     pstmt.setString(3, password);
+		     pstmt.setString(4, number);
+		     pstmt.setString(5, email);
+		     
+		     /*executeUpadte should be at last*/
+			pstmt.executeUpdate();
+			System.out.println("registered");
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("error");
+		}
+	}
+	
+	/*Home page method*/
+	public static void homePage() {
+		Scanner sc=new Scanner(System.in);
+		System.out.println("Press 1. To visit Showroom\n"
+				         + "Press 2. To sell your car\n"
+				         + "Press 3. To buy new car\n"
+				         + "Press 4. Check Upcoming cars");
+		int num=sc.nextInt();
+		
+		switch (num) {
+		case 1: System.out.println("Register Yourself <>");
+		         CarWale cw=new CarWale();
+		         cw.register();
+		         Connection con=null;
+		 		PreparedStatement pstmt=null;
+			try {
+			Class.forName("com.mysql.jdbc.Driver");
+			 con=DriverManager.getConnection("jdbc:mysql://localhost:3306?user=root&password=Missrita@55");
+		 pstmt=con.prepareStatement(" select * from  carwale.carinfo");
+			ResultSet rs=pstmt.executeQuery();
+			System.out.println("details of cars");
+			while (rs.next()) {/* next() to check data is present or not 'return type is boolean'*/
+		       
+				int id=rs.getInt(1);
+				String name=rs.getString(2);
+				int modle=rs.getInt(3);
+				int price=rs.getInt(4);
+				System.out.println("id:- "+id+" name:- "+name+" module:- "+modle+"price:- "+price);
+				
+				
+			}
+			System.out.println("Data fetched");
+		
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("error");	
+		}
+			System.out.println("Press 'H' for home page: ");
+			char h=sc.next().charAt(0);
+			switch(h) {
+			case 'h':  homePage();
+			break;
+			}
+			break;
+		case 2:  System.out.println("Sell Your car, Enter details :-");
+		
+		System.out.println("enter carid number: ");
+		int id1=sc.nextInt();
+		System.out.println("Enter car name: ");
+		String name1=sc.next();
+		System.out.println("Enter model year: ");
+		String modle1=sc.next();
+		System.out.println("Entercar price: ");
+		String year=sc.next();
+	
+		Connection con2=null;
+		PreparedStatement pstmt2=null;
+		try {
+			String fqcn="com.mysql.jdbc.Driver";
+			String url = "jdbc:mysql://localhost:3306?user=root&password=Missrita@55";
+			String insert= "insert into  carwale.carinfo values(?,?,?,?) ";
+			 Class.forName(fqcn);
+			 con2=DriverManager.getConnection(url);
+		    pstmt2= con2.prepareStatement(insert);	// to write Query 	
+	          
+		     // set values for placeholder (input from user)
+		     pstmt2.setInt(1, id1);
+		     pstmt2.setString(2, name1);
+		     pstmt2.setString(3, modle1);
+		     pstmt2.setString(4, year);
+		     
+		     
+		     /*executeUpadte should be at last*/
+			pstmt2.executeUpdate();
+			System.out.println("registered");
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("error");
+		}
+		finally {    
+			if(con2!=null) {
+				try {
+					con2.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			if(pstmt2!=null) {
+				try {
+					pstmt2.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		System.out.println("Press 'H' for home page: ");
+		char h2=sc.next().charAt(0);
+		switch(h2) {
+		case 'h':  homePage();
+		break;
+		}
+			break;
+		case 3: System.out.println("Buy new Car :-");
+		System.out.println("Enter carid of your new car: ");
+		int id2=sc.nextInt();
+		Connection con3=null;
+		PreparedStatement pstmt3=null;
+		try {
+			String fqcn="com.mysql.jdbc.Driver";
+			String url = "jdbc:mysql://localhost:3306?user=root&password=Missrita@55";
+			String insert= "delete from carwale.carinfo where carid=?  ";
+			 Class.forName(fqcn);
+			 con3=DriverManager.getConnection(url);
+		     pstmt3= con3.prepareStatement(insert);	// to write Query 	
+	          
+		     // set values for placeholder (input from user)
+		     pstmt3.setInt(1, id2);		     
+		     /*executeUpadte should be at last*/
+			pstmt3.executeUpdate();
+			System.out.println("Sucessfully Buyed a car");
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("error");
+		}
+		/*closed operation*/
+		finally {    
+			if(con3!=null) {
+				try {
+					con3.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			if(pstmt3!=null) {
+				try {
+					pstmt3.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		System.out.println("Press 'H' for home page: ");
+		char h3=sc.next().charAt(0);
+		switch(h3) {
+		case 'h':  homePage();
+		break;
+		}
+			break;	
+		case 4:  System.out.println("The Upcoming cars(:");
+		Connection con4=null;
+		PreparedStatement pstmt4=null;
+		try {
+			
+			Class.forName("com.mysql.jdbc.Driver");
+			 con4=DriverManager.getConnection("jdbc:mysql://localhost:3306?user=root&password=Missrita@55");
+			 pstmt4=con4.prepareStatement(" select * from  newcar.ncar");
+			ResultSet rs=pstmt4.executeQuery();
+			System.out.println("details of cars");
+			while (rs.next()) {/* next() to check data is present or not 'return type is boolean'*/
+		       
+				int id=rs.getInt(1);
+				String name=rs.getString(2);
+				int year1=rs.getInt(3);
+				
+				System.out.println("id:- "+id+" name:- "+name+" year:- "+year1);
+				
+				
+			}
+			System.out.println("Data fetched");
+		
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("error");	
+		}
+		/*closed operation*/
+		finally {    
+			if(con4!=null) {
+				try {
+					con4.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			if(pstmt4!=null) {
+				try {
+					pstmt4.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		System.out.println("Press 'H' for home page: ");
+		char h4=sc.next().charAt(0);
+		switch(h4) {
+		case 'h':  homePage();
+		break;
+		}
+			break;		
+			default: System.out.println("Enter valid number: ");
+				homePage();
+		}
+	}
+	public static void main(String[] args) {
+		
+	/*called method*/
+		homePage();
+		
+
+	}
+
+}
