@@ -17,18 +17,20 @@ public class CarWale{
 		String name=sc.next();
 		System.out.println("Enter password: ");
 		String password=sc.next();
-		System.out.println("Enter number: ");
+		System.out.println("Enter Phone number: ");
 		String number=sc.next();
 		System.out.println("Enter email: ");
 		String email=sc.next();
 		
+		Connection con=null;
+		  PreparedStatement pstmt=null;
 		try {
 			String fqcn="com.mysql.jdbc.Driver";
 			String url = "jdbc:mysql://localhost:3306?user=root&password=Missrita@55";
 			String insert= "insert into  register.reg values(?,?,?,?,?) ";
 			 Class.forName(fqcn);
-			Connection con=DriverManager.getConnection(url);
-		    PreparedStatement pstmt= con.prepareStatement(insert);	// to write Query 	
+			 con=DriverManager.getConnection(url);
+		   pstmt= con.prepareStatement(insert);	// to write Query 	
 	          
 		     // set values for placeholder (input from user)
 		     pstmt.setInt(1, id);
@@ -44,6 +46,22 @@ public class CarWale{
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.out.println("error");
+		}
+		finally {
+			if (con != null) {
+				try {
+					con.close();
+				} catch (Exception e2) {
+					// TODO: handle exception
+				}
+			}
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (Exception e2) {
+					// TODO: handle exception
+				}
+			}
 		}
 	}
 	
