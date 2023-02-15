@@ -102,6 +102,22 @@ public class CarWale{
 			e.printStackTrace();
 			System.out.println("error");	
 		}
+			finally {
+				if (con != null) {
+					try {
+						con.close();
+					} catch (Exception e2) {
+						// TODO: handle exception
+					}
+				}
+				if (pstmt != null) {
+					try {
+						pstmt.close();
+					} catch (Exception e2) {
+						// TODO: handle exception
+					}
+				}
+			}
 			System.out.println("Press 'H' for home page: ");
 			char h=sc.next().charAt(0);
 			switch(h) {
